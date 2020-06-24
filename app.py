@@ -4,10 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 # initialize the app
 app = Flask(__name__)
 
-ENV = 'production-mode'
+ENV = 'production'
 
 # sqlalchemy config
-if ENV == 'dev-mode':
+if ENV == 'development':
     app.debug = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:grespost@localhost/finance'
 else:

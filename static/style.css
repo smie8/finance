@@ -1,0 +1,13 @@
+body {
+    font-weight: 400;
+}
+
+.main-container, .form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-container {
+    max-width: 150px;
+}

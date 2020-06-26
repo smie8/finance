@@ -10,7 +10,7 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if session.get("userID") is None:
             # if user is not logged in, redirect to login page
-            return render_template('index.html', message='Please login first.')
+            return render_template('login.html', message='Please login first.')
         return f(*args, **kwargs)
     return decorated_function
 

@@ -26,7 +26,7 @@ def stockquery(symbol):
         content = response.read()
         # Success
         print('Response status ' + str(response.status))
-        print(content)
+        print('Content: ' + str(content))
     except:
         # Exception
         print('Exception during request')

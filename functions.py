@@ -2,6 +2,7 @@ from config import getKey
 from functools import wraps
 from flask import render_template, request, session
 import httplib2
+import json
 
 # decorate specific routes to require login
 # http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
@@ -26,7 +27,12 @@ def stockquery(symbol):
         content = response.read()
         # Success
         print('Response status ' + str(response.status))
-        print('Content: ' + str(content))
+        content = content.decode('UTF-8')
+        # to json
+        content = json.loads(content)
+        # prints value of stock ('ask')
+        print(content['quotes']['quote']['ask'])
+
     except:
         # Exception
         print('Exception during request')

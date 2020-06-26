@@ -5,7 +5,7 @@ Web application, where you can create an user, login to your account to buy and 
 
 FEATURES:
 - login system
-- lookup stock prices from Tradier API
+- lookup stock info using [Tradier API](https://developer.tradier.com/getting_started)
 
 FUTURE FEATURES:
 - buy and sell stocks

@@ -13,7 +13,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # if ENV is other than 'dev' -> app is using heroku's database
-ENV = 'dev'
+ENV = 'prod'
 # ENV = 'production'
 
 # sqlalchemy config

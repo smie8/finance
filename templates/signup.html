@@ -1,0 +1,44 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance</title>
+    <link rel="stylesheet" href="../static/style.css" />
+</head>
+<body>
+    <div class="main-container">
+
+        <h2>Sign up</h2>
+        <form action="/signup" method="POST" class="form-container">
+            <input type="text" name="username" placeholder="enter username" />
+            <input type="password" name="password" placeholder="password" />
+            <input type="password" name="password2" placeholder="confirm password" />
+            <input type="submit" value="Sign up" />
+        </form>
+        {% if message %}
+            <p>{{ message }}</p>
+         {% endif %}
+    </div>  
+</body>
+</html> -->
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+{% block main %}
+    <form action="/signup" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+            <input class="form-control" name="password2" placeholder="Confirm Password" type="password">
+
+        </div>
+        <button class="btn btn-primary" type="submit">Sign Up</button>
+    </form>
+{% endblock %}

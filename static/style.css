@@ -11,3 +11,35 @@ body {
 .form-container {
     max-width: 150px;
 }
+
+
+a:hover {
+    background: #EBEBEB;
+}
+
+a:visited, a, a:link {
+    color: #000000;
+    border-radius: 0.5em;
+    margin: 0.2em;
+    padding: 0.2em;
+}
+
+.form a {
+    text-align: center;
+    margin-top: 1em;
+}
+
+.form {
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+main.container.p-5 {
+    display: flex;
+    justify-content: center;
+}
+¨
+#widebutton {
+    width: 100%;
+}

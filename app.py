@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from functions import stockquery, login_required
 from passlib.hash import sha256_crypt
+from config import getPostgresUri
 
 # initialize/configure the app
 app = Flask(__name__)
@@ -13,7 +14,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # if ENV is other than 'dev' -> app is using heroku's database
-ENV = 'prod'
+ENV = 'dev'
 # ENV = 'production'
 
 # sqlalchemy config
@@ -22,7 +23,7 @@ if ENV == 'dev':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:grespost@localhost/finance'
 else:
     app.debug = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://oarxlexrxojpdg:28b0f1651cc8790a64949c6804b29242763b855372b782d344c387997e1645f4@ec2-35-173-94-156.compute-1.amazonaws.com:5432/d9l1e9pirshh41'
+    app.config['SQLALCHEMY_DATABASE_URI'] = getPostgresUri()
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

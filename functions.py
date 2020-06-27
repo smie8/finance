@@ -24,14 +24,23 @@ def stockquery(symbol):
     connection.request('GET', '/v1/markets/quotes?symbols=' + symbol, None, headers)
     try:
         response = connection.getresponse()
-        content = response.read()
+        respContent = response.read()
         # Success
         print('Response status ' + str(response.status))
-        content = content.decode('UTF-8')
+        respContent = respContent.decode('UTF-8')
         # to json
-        content = json.loads(content)
-        # prints value of stock ('ask')
-        print(content['quotes']['quote']['ask'])
+        respContent = json.loads(respContent)
+        # prints value of stock ('prevclose')
+        stockData = {
+            'company': respContent['quotes']['quote']['description'],
+            'price': respContent['quotes']['quote']['last'],
+            'symbol': respContent['quotes']['quote']['symbol']
+
+        }
+        # print(stockData) TODO
+        # print(stockData['price']) TODO
+
+        return stockData
 
     except:
         # Exception

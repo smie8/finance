@@ -49,7 +49,7 @@ class Users(db.Model):
 def index():
 
     # TODO
-    stockquery('spy')
+    print(stockquery('V'))
 
     return render_template('login.html')
 
@@ -133,6 +133,22 @@ def signup():
             return render_template('signup.html', message='This username is taken.')
         else:
             return render_template('signup.html', message='Username missing.')
+
+@app.route('/quote', methods=['GET', 'POST'])
+def quote():
+
+    if request.method == 'GET':
+        return render_template('quote.html')
+
+    if request.method == 'POST':
+        symbol = request.form['symbol']
+        try:
+            data = stockquery(symbol)
+            msg = 'Price for ' + str(data['company']) + ' is ' + str(data['price'])
+            return render_template('quote.html', message=msg)
+        except:
+            return render_template('quote.html', message='Stock not found.')
+ 
 
 @app.route('/dashboard')
 @login_required

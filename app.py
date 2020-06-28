@@ -147,7 +147,7 @@ def quote():
             msg = 'Price for ' + str(data['company']) + ' is ' + str(data['price'])
             return render_template('quote.html', message=msg)
         except:
-            return render_template('quote.html', message='Stock not found.')
+            return render_template('quote.html', message='Stock not found with symbol \"' + symbol + '\"')
  
 
 @app.route('/dashboard')

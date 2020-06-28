@@ -24,14 +24,11 @@
         <nav class="navbar navbar-expand-md navbar-light bg-light border">
             <a class="navbar-brand" href="/">Finance</a>
             <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
-                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbar">
                 {% if session.userID %}
                     <ul class="navbar-nav mr-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
-                    </ul>
-                    <ul class="navbar-nav mr-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="/quote">Quote</a></li>
                     </ul>
                     <ul class="navbar-nav ml-auto mt-2">
@@ -39,8 +36,8 @@
                     </ul>
                 {% else %}
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/signup">Sign up</a></li>
                         <li class="nav-item"><a class="nav-link" href="/">Log In</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/signup">Sign up</a></li>
                     </ul>
                 {% endif %}
             </div>

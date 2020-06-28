@@ -30,15 +30,13 @@ def stockquery(symbol):
         respContent = respContent.decode('UTF-8')
         # to json
         respContent = json.loads(respContent)
-        # prints value of stock ('prevclose')
+        # let's return the response's data as dict
         stockData = {
             'company': respContent['quotes']['quote']['description'],
             'price': respContent['quotes']['quote']['last'],
             'symbol': respContent['quotes']['quote']['symbol']
 
         }
-        # print(stockData) TODO
-        # print(stockData['price']) TODO
 
         return stockData
 

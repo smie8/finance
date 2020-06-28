@@ -4,6 +4,7 @@ from flask_session import Session
 from functions import stockquery, login_required
 from passlib.hash import sha256_crypt
 from config import getPostgresUri
+import datetime
 
 # initialize/configure the app
 app = Flask(__name__)
@@ -30,7 +31,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # database-object
 db = SQLAlchemy(app)
 
-# database model
+# database "table models"
 class Users(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -44,12 +45,39 @@ class Users(db.Model):
         self.password = password
         self.money = money
 
+class Stocks(db.Model):
+    __tablename__ = 'stocks'
+    id = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer)
+    symbol = db.Column(db.String(20))
+    count = db.Column(db.Integer)
+
+    def __init__(self, userid, symbol, count):
+        self.userid = userid
+        self.symbol = symbol
+        self.count = count
+
+class History(db.Model):
+    __tablename__ = 'history'
+    id = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer)
+    symbol = db.Column(db.String(20))
+    count = db.Column(db.Integer)
+    price = db.Column(db.Float, nullable=False)
+    timestamp = db.Column(db.String(200))
+    
+    def __init__(self, userid, symbol, count, price, timestamp):
+        self.userid = userid
+        self.symbol = symbol
+        self.count = count
+        self.price = price
+        self.timestamp = timestamp
+
 # routes
 @app.route('/')
 def index():
 
     # TODO
-    print(stockquery('V'))
 
     return render_template('login.html')
 
@@ -148,6 +176,60 @@ def quote():
             return render_template('quote.html', message=msg)
         except:
             return render_template('quote.html', message='Stock not found with symbol \"' + symbol + '\"')
+
+@app.route('/buy', methods=['GET', 'POST'])
+def buy():
+
+    if request.method == 'GET':
+        return render_template('buy.html')
+
+    if request.method == 'POST':
+        symbol = request.form['symbol']
+        count = int(request.form['count'])
+        userid = session['userID']
+        timestamp = str(datetime.datetime.now())
+
+        try:
+            data = stockquery(symbol)
+            price = data['price']
+            cost = price * count # TODO times count
+            msg = 'Bought ' + str(count) + ' stocks of company ' + str(data['company'])
+            user = db.session.query(Users).filter(Users.id == userid)
+            money = user[0].money
+
+            # count should be > 0
+            if count < 1: 
+                return render_template('buy.html', message='Number should be positive integer.')
+
+            # checking if user have sufficient funds for payment
+            if cost > money:
+                return render_template('buy.html', message='Could not buy. Insufficient funds.')
+
+            # substract money from user
+            user[0].money -= cost
+            db.session.commit()
+            print('money substracted')
+
+            # create row to stocks database if user has no company's stocks, else update
+            stock = db.session.query(Stocks).filter(Stocks.userid == userid, Stocks.symbol == symbol)
+            if stock.count() == 0:
+                data = Stocks(userid, symbol, count)
+                db.session.add(data)
+            else:
+                stock[0].count += count
+                db.session.commit()
+            print('stocks updated')
+
+            # commit to history database
+            data = History(userid, symbol, count, price, timestamp)
+            db.session.add(data)
+            db.session.commit()
+            print('history updated')
+
+            return render_template('buy.html', message=msg)
+            
+        except:
+            return render_template('buy.html', message='Something went wrong.')
  
 
 @app.route('/dashboard')

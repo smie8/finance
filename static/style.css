@@ -45,3 +45,18 @@ main.container.p-5 {
 #symbols {
     text-transform: uppercase;
 }
+
+/* Table */
+td, th {
+    text-align: left;
+    padding: 0.5em 1em 0 0.5em;
+}
+
+thead {
+    border-bottom: solid 2px;
+}
+
+table {
+    margin: auto;
+    min-width: 1px;
+}

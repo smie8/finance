@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+<div class="form">
+    <form action="/sell" method="post">
+        <div class="form-group">
+            <select autofocus class="form-control" id="symbols" name="symbol">
+                {% for elem in symbols %}
+                    <option name={{ elem['symbol'] }} value={{ elem['symbol'] }}>{{ elem['symbol'] }}</option>
+                {% endfor %}
+            </select>
+            <input autofocus class="form-control" name="count" placeholder="Number of stocks" type="number">
+        </div>
+        <button class="btn btn-primary" type="submit" id="widebutton">Sell</button>
+    </form>
+</div>
+{% endblock %}

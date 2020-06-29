@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from functions import stockquery, login_required
@@ -94,27 +94,29 @@ def login():
         password = request.form['password_login']
 
         if not username:
-            return render_template('login.html', message='Please enter username to login.')
+            flash('Please enter username to login.')
+            return redirect('/login')
         elif not password:
-            return render_template('login.html', message='Please enter password.')
-
-        # TODO password hashing
+            flash('Please enter password.')
+            return redirect('/login')
 
         # exception handling in case user is not found in database
         try:
+            # let's find the user from db and check hashed password
             user = db.session.query(Users).filter(Users.username == username)
-            # if password == user[0].password:
+
             if sha256_crypt.verify(password, user[0].password):
                 print('Correct password.') 
+                # let's save logged in user into session
                 session['userID'] = user[0].id
-                # return redirect('/dashboard') TODO How to get redirect to work?
-                return render_template('dashboard.html', message = 'Logged in successfully.')
+                flash('Logged in successfully as user "' + username + '"')
+                return redirect('/dashboard')
             else:
-                print('Incorrect password.')
-                return render_template('login.html', message='Incorrect password.')
+                flash('Incorrect password.')
+                return redirect('/login')
         except:
-            return render_template('login.html', message='Incorrect username.')
-
+            flash('User "' + username + '" does not exist.')
+            return redirect('/login')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -131,21 +133,24 @@ def signup():
 
         print('username: ' + username, 'password: ' + password)
 
-        # password validation
-        if not password:
-            return render_template('signup.html', message='Password missing.')
-        elif password != password2:
-            return render_template('signup.html', message='Passwords do not match.')
-        elif len(password) < 8:
-            return render_template('signup.html', message='Password must contain at least 8 characters.')
 
-        # hash
-        password = sha256_crypt.encrypt(password)
 
         # username validation
         if username:
             # if user does not exist, create new user
             if db.session.query(Users).filter(Users.username == username).count() == 0:
+
+                # password validation
+                if not password:
+                    return render_template('signup.html', message='Password missing.')
+                elif password != password2:
+                    return render_template('signup.html', message='Passwords do not match.')
+                elif len(password) < 8:
+                    return render_template('signup.html', message='Password must contain at least 8 characters.')
+
+                # hash password
+                password = sha256_crypt.encrypt(password)
+
                 data = Users(username, password, initMoney)
                 db.session.add(data)
                 db.session.commit()
@@ -156,13 +161,15 @@ def signup():
                     session['userID'] = user[0].id
                 except:
                     return render_template('login.html', message='Something went wrong.')
-                return render_template('main.html', message='User ' + username + ' created. You have logged in successfully.')
+                flash('User ' + username + ' created. You have logged in successfully.')
+                return redirect('/dashboard')
             
             return render_template('signup.html', message='This username is taken.')
         else:
             return render_template('signup.html', message='Username missing.')
 
 @app.route('/quote', methods=['GET', 'POST'])
+@login_required
 def quote():
 
     if request.method == 'GET':
@@ -178,6 +185,7 @@ def quote():
             return render_template('quote.html', message='Stock not found with symbol \"' + symbol + '\"')
 
 @app.route('/buy', methods=['GET', 'POST'])
+@login_required
 def buy():
 
     if request.method == 'GET':
@@ -232,6 +240,73 @@ def buy():
             return render_template('buy.html', message='Something went wrong.')
  
 
+@app.route('/sell', methods=['GET', 'POST'])
+@login_required
+def sell():
+
+    userid = session['userID']
+
+    if request.method == 'GET':
+        # get all user's shares from database and pass them to select menu's options
+        symbols = db.session.query(Stocks).filter(Stocks.userid == userid)
+        return render_template('sell.html', symbols = symbols)
+
+    if request.method == 'POST':
+        symbol = request.form['symbol']
+        count = int(request.form['count'])
+        timestamp = str(datetime.datetime.now())
+
+        try:
+            data = stockquery(symbol)
+            price = data['price']
+            cost = price * count
+            msg = 'Sold ' + str(count) + ' stocks of company ' + str(data['company'])
+            user = db.session.query(Users).filter(Users.id == userid)
+            money = user[0].money
+
+            # count should be > 0
+            if count < 1: 
+                flash('Number should be positive integer.')
+                return redirect('/sell')
+
+            # update stocks count. if stocks == 0, delete row
+            stock = db.session.query(Stocks).filter(Stocks.userid == userid, Stocks.symbol == symbol).first()
+            if stock.count - count >= 0:
+                # TODO , does not work
+                # if no stocks left -> delete, else update
+                if stock.count - count == 0:
+                    print('no stocks left')
+                    db.session.delete(stock)
+                    db.session.commit()
+                    print('stocks deleted')
+                else:
+                    stock.count -= count
+                    db.session.commit()
+                    print('stocks substracted from inventory')
+
+                # add money to user
+                user[0].money += cost
+                db.session.commit()
+                print('money added')
+
+            elif stock.count - count < 0:
+                flash('You do not own that many stocks.')
+                return redirect('/sell')
+
+            # commit to history database
+            count *= -1 # because user is selling
+            data = History(userid, symbol, count, price, timestamp)
+            db.session.add(data)
+            db.session.commit()
+            print('history updated')
+
+            flash(msg)
+            return redirect('/sell')
+            
+        except:
+            flash('Something went wrong.')
+            return redirect('/sell')
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -240,6 +315,7 @@ def dashboard():
 @app.route('/logout')
 def logout():
     session.clear()
+    flash('Logged out.')
     return redirect("/")
 
 

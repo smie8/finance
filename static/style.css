@@ -17,11 +17,9 @@ a:hover {
     background: #EBEBEB;
 }
 
-a:visited, a, a:link {
+a {
     color: #000000;
     border-radius: 0.5em;
-    margin: 0.2em;
-    padding: 0.2em;
 }
 
 .form a {
@@ -42,4 +40,8 @@ main.container.p-5 {
 ¨
 #widebutton {
     width: 100%;
+}
+
+#symbols {
+    text-transform: uppercase;
 }

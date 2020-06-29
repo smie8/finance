@@ -6,10 +6,13 @@ Web application, where you can create an user, login to your account to buy and 
 ### FEATURES:
 - login system
 - lookup stock info using [Tradier API](https://developer.tradier.com/getting_started)
+- buy stocks
 
 ### FUTURE FEATURES:
-- buy and sell stocks
-- view all of your stocks and their value
+- sell stocks
+- view transaction history
+- list your stocks and their total value
+- user hall of fame
 
 ### TECH STACK:
 - Heroku

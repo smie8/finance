@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+
+    {% if stocks %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Stocks</th>
+                    <th>Price</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                  {% for stock in stocks %}
+                    <tr>
+                        <td>{{ stock['symbol'] }}</td>
+                        <td>{{ stock['count'] }}</td>
+                        <td>${{ stock['price'] }}</td>
+                        <td>{{ stock['timestamp'] }}</td>
+                    </tr>
+                  {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+{% endblock %}

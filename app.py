@@ -133,8 +133,6 @@ def signup():
 
         print('username: ' + username, 'password: ' + password)
 
-
-
         # username validation
         if username:
             # if user does not exist, create new user
@@ -306,6 +304,19 @@ def sell():
         except:
             flash('Something went wrong.')
             return redirect('/sell')
+
+@app.route('/history')
+@login_required
+def history():
+    # fetch user's transaction history
+    userid = session['userID']
+    try:
+        stocks = db.session.query(History).filter(History.userid == userid)
+        return render_template('history.html', stocks=stocks)
+    except:
+        print('Something went wrong')
+        return render_template('history.html')
+
 
 @app.route('/dashboard')
 @login_required

@@ -10,19 +10,22 @@
         <table>
             <thead>
                 <tr>
+                    <th></th>
                     <th>Symbol</th>
-                    <th>Stocks</th>
-                    <th>Price</th>
+                    <th>Count</th>
+                    <th>Value</th>
                     <th>Timestamp</th>
                 </tr>
             </thead>
             <tbody>
                   {% for stock in stocks %}
                     <tr {% if stock['count'] >= 0 %}
-                        class="negative"
+                        class="negative">
+                        <td>BUY</td>
                         {% else %}
-                        class="positive"
-                        {% endif %} >
+                        class="positive">
+                        <td>SELL</td>
+                        {% endif %}
                         <td>{{ stock['symbol'] }}</td>
                         <td>{{ stock['count'] }}</td>
                         <td>${{ stock['price'] }}</td>

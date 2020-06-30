@@ -61,6 +61,10 @@ table {
     min-width: 1px;
 }
 
+tr td:nth-child(3) {
+    text-align: right;
+}
+
 .positive {
     background: #c0ffc0;
 }

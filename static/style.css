@@ -60,3 +60,11 @@ table {
     margin: auto;
     min-width: 1px;
 }
+
+.positive {
+    background: #c0ffc0;
+}
+
+.negative {
+    background: #ffcece;
+}

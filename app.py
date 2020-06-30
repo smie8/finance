@@ -227,7 +227,8 @@ def buy():
             print('stocks updated')
 
             # commit to history database
-            data = History(userid, symbol, count, price, timestamp)
+            price = round(price, 3)
+            data = History(userid, symbol, count, price*-1, timestamp)
             db.session.add(data)
             db.session.commit()
             print('history updated')
@@ -293,6 +294,7 @@ def sell():
 
             # commit to history database
             count *= -1 # because user is selling
+            price = round(price, 3)
             data = History(userid, symbol, count, price, timestamp)
             db.session.add(data)
             db.session.commit()

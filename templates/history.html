@@ -18,7 +18,11 @@
             </thead>
             <tbody>
                   {% for stock in stocks %}
-                    <tr>
+                    <tr {% if stock['count'] >= 0 %}
+                        class="negative"
+                        {% else %}
+                        class="positive"
+                        {% endif %} >
                         <td>{{ stock['symbol'] }}</td>
                         <td>{{ stock['count'] }}</td>
                         <td>${{ stock['price'] }}</td>

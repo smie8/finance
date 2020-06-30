@@ -7,9 +7,9 @@ Web application, where you can create an user, login to your account to buy and 
 - login system
 - lookup stock info using [Tradier API](https://developer.tradier.com/getting_started)
 - buy and sell stocks
+- view history of buying and selling stocks
 
 ### FUTURE FEATURES
-- view transaction history
 - list your stocks and their total value
 - user hall of fame
 

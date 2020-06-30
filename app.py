@@ -194,6 +194,8 @@ def buy():
         count = int(request.form['count'])
         userid = session['userID']
         timestamp = str(datetime.datetime.now())
+        timestamp = timestamp.split('.')
+        timestamp = timestamp[0]
 
         try:
             data = stockquery(symbol)
@@ -227,7 +229,7 @@ def buy():
             print('stocks updated')
 
             # commit to history database
-            price = round(price, 3)
+            price = round(price, 2)
             data = History(userid, symbol, count, price*-1, timestamp)
             db.session.add(data)
             db.session.commit()
@@ -254,6 +256,8 @@ def sell():
         symbol = request.form['symbol']
         count = int(request.form['count'])
         timestamp = str(datetime.datetime.now())
+        timestamp = timestamp.split('.')
+        timestamp = timestamp[0]
 
         try:
             data = stockquery(symbol)
@@ -294,7 +298,7 @@ def sell():
 
             # commit to history database
             count *= -1 # because user is selling
-            price = round(price, 3)
+            price = round(price, 2)
             data = History(userid, symbol, count, price, timestamp)
             db.session.add(data)
             db.session.commit()

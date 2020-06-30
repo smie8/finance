@@ -10,26 +10,26 @@
         <table>
             <thead>
                 <tr>
-                    <th></th>
+                    <th>Date</th>
                     <th>Symbol</th>
-                    <th>Count</th>
-                    <th>Value</th>
-                    <th>Timestamp</th>
+                    <th>Shares</th>
+                    <th>Price</th>
+                    <th>Total </th>
                 </tr>
             </thead>
             <tbody>
                   {% for stock in stocks %}
                     <tr {% if stock['count'] >= 0 %}
                         class="negative">
-                        <td>BUY</td>
+                        <td>{{ stock['timestamp'] }}</td>
                         {% else %}
                         class="positive">
-                        <td>SELL</td>
+                        <td>{{ stock['timestamp'] }}</td>
                         {% endif %}
-                        <td>{{ stock['symbol'] }}</td>
+                        <td class="symbol">{{ stock['symbol'] }}</td>
                         <td>{{ stock['count'] }}</td>
                         <td>${{ stock['price'] }}</td>
-                        <td>{{ stock['timestamp'] }}</td>
+                        <td>${{ stock['total'] }}</td>
                     </tr>
                   {% endfor %}
             </tbody>

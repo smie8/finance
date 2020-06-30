@@ -65,13 +65,15 @@ class History(db.Model):
     count = db.Column(db.Integer)
     price = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.String(200))
+    total = db.Column(db.Float)
     
-    def __init__(self, userid, symbol, count, price, timestamp):
+    def __init__(self, userid, symbol, count, price, timestamp, total):
         self.userid = userid
         self.symbol = symbol
         self.count = count
         self.price = price
         self.timestamp = timestamp
+        self.total = total
 
 # routes
 @app.route('/')
@@ -228,9 +230,10 @@ def buy():
                 db.session.commit()
             print('stocks updated')
 
-            # commit to history database
             price = round(price, 2)
-            data = History(userid, symbol, count, price*-1, timestamp)
+            total = price * count
+            # commit to history database
+            data = History(userid, symbol, count, price, timestamp, total)
             db.session.add(data)
             db.session.commit()
             print('history updated')
@@ -296,10 +299,11 @@ def sell():
                 flash('You do not own that many stocks.')
                 return redirect('/sell')
 
-            # commit to history database
+            total = price * count
             count *= -1 # because user is selling
             price = round(price, 2)
-            data = History(userid, symbol, count, price, timestamp)
+            # commit to history database
+            data = History(userid, symbol, count, price, timestamp, total)
             db.session.add(data)
             db.session.commit()
             print('history updated')

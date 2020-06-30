@@ -42,7 +42,7 @@ main.container.p-5 {
     width: 100%;
 }
 
-#symbols {
+#symbols, .symbol {
     text-transform: uppercase;
 }
 

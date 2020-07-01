@@ -6,7 +6,6 @@
 
 {% block main %}
 
-    {% if stocks %}
         <table>
             <thead>
                 <tr>
@@ -17,7 +16,8 @@
                     <th>Total </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="dashboardTable">
+                {% if stocks %}
                   {% for stock in stocks %}
                     <tr>
                         <td class="symbol">{{ stock['symbol'] }}</td>
@@ -27,6 +27,15 @@
                         <td>${{ stock['total'] }}</td>
                     </tr>
                   {% endfor %}
+                {% else %}
+                <tr>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                {% endif %}
             </tbody>
             <tfoot>
                 <tr>
@@ -34,10 +43,9 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>{{ total }}</td>   
+                    <td>${{ total }}</td>   
                 </tr>
             </tfoot>
         </table>
-    {% endif %}
 
 {% endblock %}

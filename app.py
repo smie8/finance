@@ -364,6 +364,8 @@ def dashboard():
             stocksList.append(stockDict)
             total += stock.total
 
+        total = round(total, 2)
+
         return render_template('dashboard.html', stocks=stocksList, total=total)
     except:
         print('Something went wrong')

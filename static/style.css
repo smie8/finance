@@ -77,10 +77,14 @@ tr td:nth-child(3) {
     text-align: right;
 }
 
+tfoot tr {
+    border-top: 1px solid;
+}
+
 .sell {
     background: #eaeaea;
 }
 
-.buy {
+.buy, .dashboardTable tr {
     background: #c3e6ff;
 }

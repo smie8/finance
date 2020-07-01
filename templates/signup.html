@@ -7,31 +7,45 @@
 {% block main %}
     <form action="/signup" method="post">
         <div class="form-group">
-            <label for="username">Username</label>
+            <!-- <label for="username">Username</label> -->
             <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
+        <div class="form-group" id="passwords">
+            <label for="password" id="passlabel"></label>
             <input class="form-control" name="password" placeholder="Password" type="password" id="password">
-            <input class="form-control" name="password2" placeholder="Confirm Password" type="password" id="password2">
+            <input class="form-control" name="password2" placeholder="Re-enter password" type="password" id="password2">
 
         </div>
         <button class="btn btn-primary" type="submit">Sign Up</button>
     </form>
 
     <script>
-        const pass = document.getElementById("password");
-        const pass2 = document.getElementById("password2");
+        const pass = document.getElementById('password');
+        const pass2 = document.getElementById('password2');
+        const passlabel = document.getElementById('passlabel');
+        const passwords = document.querySelectorAll('#passwords .form-control');
 
         // Change password confirmation's background color depending on if passwords are same
-        pass2.addEventListener('keyup', () => {
-            if (pass.value != pass2.value) {
-                pass.style.background = '#ffcece';
-                pass2.style.background = '#ffcece';
-            } else {
-                pass.style.background = '#c0ffc0';
-                pass2.style.background = '#c0ffc0';
-            }
+        passwords.forEach((elem) => {
+            elem.addEventListener('keyup', () => {
+                if (pass.value != "" && pass2.value != "") {
+                    if (pass.value != pass2.value) {
+                        passlabel.innerText = "Passwords do not match.";
+                        pass.style.background = '#ffcece';
+                        pass2.style.background = '#ffcece';
+                    } else {
+                        passlabel.innerText = "Password match.";
+                        pass.style.background = '#c0ffc0';
+                        pass2.style.background = '#c0ffc0';
+                    }
+                } else {
+                    passlabel.innerText = "";
+                    pass.style.background = "transparent";
+                    pass2.style.background = "transparent";
+                }
+
+            })
         })
+
     </script>
 {% endblock %}

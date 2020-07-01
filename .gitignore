@@ -5,5 +5,3 @@ config.py
 Procfile
 Pipfile
 Pipfile.lock
-requirements.txt
-runtime.txt

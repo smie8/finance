@@ -33,6 +33,10 @@ a {
     flex-direction: column;
 }
 
+label {
+    font-size: 0.8em;
+}
+
 main.container.p-5 {
     display: flex;
     justify-content: center;

@@ -7,9 +7,11 @@
 {% block main %}
     <form action="/signup" method="post">
         <div class="form-group">
+            <label for="username">Username</label>
             <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
         </div>
         <div class="form-group">
+            <label for="password">Password</label>
             <input class="form-control" name="password" placeholder="Password" type="password" id="password">
             <input class="form-control" name="password2" placeholder="Confirm Password" type="password" id="password2">
 
@@ -22,10 +24,12 @@
         const pass2 = document.getElementById("password2");
 
         // Change password confirmation's background color depending on if passwords are same
-        pass2.addEventListener('keyup', (e) => {
+        pass2.addEventListener('keyup', () => {
             if (pass.value != pass2.value) {
+                pass.style.background = '#ffcece';
                 pass2.style.background = '#ffcece';
             } else {
+                pass.style.background = '#c0ffc0';
                 pass2.style.background = '#c0ffc0';
             }
         })

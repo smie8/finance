@@ -2,6 +2,3 @@
 /flask_session/*
 __pycache__
 config.py
-Procfile
-Pipfile
-Pipfile.lock

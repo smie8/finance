@@ -1,3 +1,4 @@
 /.vscode/*
 /flask_session/*
 __pycache__
+config.py

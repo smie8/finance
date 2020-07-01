@@ -5,5 +5,39 @@
 {% endblock %}
 
 {% block main %}
-TODO
+
+    {% if stocks %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Name</th>
+                    <th>Shares</th>
+                    <th>Price</th>
+                    <th>Total </th>
+                </tr>
+            </thead>
+            <tbody>
+                  {% for stock in stocks %}
+                    <tr>
+                        <td class="symbol">{{ stock['symbol'] }}</td>
+                        <td>{{ stock['name'] }}</td>
+                        <td>{{ stock['count'] }}</td>
+                        <td>${{ stock['price'] }}</td>
+                        <td>${{ stock['total'] }}</td>
+                    </tr>
+                  {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ total }}</td>   
+                </tr>
+            </tfoot>
+        </table>
+    {% endif %}
+
 {% endblock %}

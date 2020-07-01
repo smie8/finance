@@ -51,11 +51,13 @@ class Stocks(db.Model):
     userid = db.Column(db.Integer)
     symbol = db.Column(db.String(20))
     count = db.Column(db.Integer)
+    name = db.Column(db.String(250))
 
-    def __init__(self, userid, symbol, count):
+    def __init__(self, userid, symbol, count, name):
         self.userid = userid
         self.symbol = symbol
         self.count = count
+        self.name = name
 
 class History(db.Model):
     __tablename__ = 'history'
@@ -66,14 +68,16 @@ class History(db.Model):
     price = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.String(200))
     total = db.Column(db.Float)
+    name = db.Column(db.String(250))
     
-    def __init__(self, userid, symbol, count, price, timestamp, total):
+    def __init__(self, userid, symbol, count, price, timestamp, total, name):
         self.userid = userid
         self.symbol = symbol
         self.count = count
         self.price = price
         self.timestamp = timestamp
         self.total = total
+        self.name = name
 
 # routes
 @app.route('/')
@@ -203,8 +207,9 @@ def buy():
         try:
             data = stockquery(symbol)
             price = data['price']
+            name = str(data['company'])
             cost = price * count # TODO times count
-            msg = 'Bought ' + str(count) + ' stocks of company ' + str(data['company'])
+            msg = 'Bought ' + str(count) + ' share(s) of company ' + name
             user = db.session.query(Users).filter(Users.id == userid)
             money = user[0].money
 
@@ -224,7 +229,7 @@ def buy():
             # create row to stocks database if user has no company's stocks, else update
             stock = db.session.query(Stocks).filter(Stocks.userid == userid, Stocks.symbol == symbol)
             if stock.count() == 0:
-                data = Stocks(userid, symbol, count)
+                data = Stocks(userid, symbol, count, name)
                 db.session.add(data)
             else:
                 stock[0].count += count
@@ -234,7 +239,7 @@ def buy():
             price = round(price, 2)
             total = price * count
             # commit to history database
-            data = History(userid, symbol, count, price, timestamp, total)
+            data = History(userid, symbol, count, price, timestamp, total, name)
             db.session.add(data)
             db.session.commit()
             print('history updated')
@@ -267,7 +272,8 @@ def sell():
             data = stockquery(symbol)
             price = data['price']
             cost = price * count
-            msg = 'Sold ' + str(count) + ' stocks of company ' + str(data['company'])
+            name = str(data['company'])
+            msg = 'Sold ' + str(count) + ' share(s) of stock ' + name
             user = db.session.query(Users).filter(Users.id == userid)
             money = user[0].money
 
@@ -280,16 +286,16 @@ def sell():
             stock = db.session.query(Stocks).filter(Stocks.userid == userid, Stocks.symbol == symbol).first()
             if stock.count - count >= 0:
                 # TODO , does not work
-                # if no stocks left -> delete, else update
+                # if no shares left -> delete, else update
                 if stock.count - count == 0:
-                    print('no stocks left')
+                    print('no shares left')
                     db.session.delete(stock)
                     db.session.commit()
-                    print('stocks deleted')
+                    print('shares deleted')
                 else:
                     stock.count -= count
                     db.session.commit()
-                    print('stocks substracted from inventory')
+                    print('shares substracted from inventory')
 
                 # add money to user
                 user[0].money += cost
@@ -297,14 +303,14 @@ def sell():
                 print('money added')
 
             elif stock.count - count < 0:
-                flash('You do not own that many stocks.')
+                flash('You do not own that many shares.')
                 return redirect('/sell')
 
             total = price * count
             count *= -1 # because user is selling
             price = round(price, 2)
             # commit to history database
-            data = History(userid, symbol, count, price, timestamp, total)
+            data = History(userid, symbol, count, price, timestamp, total, name)
             db.session.add(data)
             db.session.commit()
             print('history updated')
@@ -332,7 +338,36 @@ def history():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    # fetch user's stocks
+    userid = session['userID']
+    try:
+        stocks = db.session.query(Stocks).filter(Stocks.userid == userid)
+        # stocks list
+        stocksList = []
+        # total value
+        total = 0
+
+        for stock in stocks:
+            data = stockquery(stock.symbol)
+            print(data)
+            price = data['price']
+            stock.price = round(price, 2)
+            stock.total = round(stock.count * stock.price, 2)
+            stockDict = {
+                "symbol": stock.symbol,
+                "name": stock.name,
+                "price": stock.price,
+                "count": stock.count,
+                "total": stock.total
+            }
+            # put dictionary to list
+            stocksList.append(stockDict)
+            total += stock.total
+
+        return render_template('dashboard.html', stocks=stocksList, total=total)
+    except:
+        print('Something went wrong')
+        return render_template('dashboard.html')
  
 @app.route('/logout')
 def logout():

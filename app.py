@@ -83,10 +83,11 @@ class History(db.Model):
 @app.route('/')
 def index():
 
-    if not session.get('userID'):
-        return render_template('login.html')
-    else:
-        return redirect('/dashboard')        
+    if request.method == 'GET':
+        if not session.get('userID'):
+            return render_template('login.html')
+        else:
+            return redirect('/dashboard')        
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

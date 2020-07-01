@@ -13,17 +13,17 @@
                     <th>Date</th>
                     <th>Symbol</th>
                     <th>Shares</th>
-                    <th>Price</th>
+                    <th>Share price</th>
                     <th>Total </th>
                 </tr>
             </thead>
             <tbody>
                   {% for stock in stocks %}
                     <tr {% if stock['count'] >= 0 %}
-                        class="negative">
+                        class="buy">
                         <td>{{ stock['timestamp'] }}</td>
                         {% else %}
-                        class="positive">
+                        class="sell">
                         <td>{{ stock['timestamp'] }}</td>
                         {% endif %}
                         <td class="symbol">{{ stock['symbol'] }}</td>

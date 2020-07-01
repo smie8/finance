@@ -8,10 +8,13 @@ body {
     justify-content: center;
 }
 
+.p-5 {
+    padding: 2rem !important;
+}
+
 .form-container {
     max-width: 150px;
 }
-
 
 a:hover {
     background: #EBEBEB;
@@ -54,6 +57,11 @@ main.container.p-5 {
 td, th {
     text-align: left;
     padding: 0.5em 1em 0 0.5em;
+    white-space: nowrap;
+}
+
+th {
+    font-weight: 400;
 }
 
 thead {
@@ -69,10 +77,10 @@ tr td:nth-child(3) {
     text-align: right;
 }
 
-.positive {
-    background: #c0ffc0;
+.sell {
+    background: #eaeaea;
 }
 
-.negative {
-    background: #ffcece;
+.buy {
+    background: #c3e6ff;
 }

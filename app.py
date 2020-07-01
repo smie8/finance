@@ -16,7 +16,7 @@ Session(app)
 
 # if ENV is other than 'dev' -> app is using heroku's database
 ENV = 'dev'
-# ENV = 'prod'
+# ENV = 'heroku'
 
 # sqlalchemy config
 if ENV == 'dev':
@@ -184,7 +184,7 @@ def quote():
         symbol = request.form['symbol']
         try:
             data = stockquery(symbol)
-            msg = 'Price for ' + str(data['company']) + ' is ' + str(data['price'])
+            msg = 'Price for ' + str(data['company']) + ' is $' + str(data['price'])
             return render_template('quote.html', message=msg)
         except:
             return render_template('quote.html', message='Stock not found with symbol \"' + symbol + '\"')

@@ -5,13 +5,13 @@ Web application, where you can create an user, login to your account to buy and 
 
 ### FEATURES
 - login system
-- lookup stock info using [Tradier API](https://developer.tradier.com/getting_started)
+- lookup stock price using [Tradier API](https://developer.tradier.com/getting_started)
 - buy and sell stocks
+- list your stocks and their total value
 - view history of buying and selling stocks
 
 ### FUTURE FEATURES
-- list your stocks and their total value
-- user hall of fame
+- top list of wealthiest users
 
 ### TECH STACK
 - Heroku

@@ -5,8 +5,7 @@ import httplib2
 import json
 import os
 
-# heroku's env variables:
-#   heroku config:set API_KEY=insert-key-here
+# get api key from env variables
 api_key = os.getenv("API_KEY")
 
 # decorate specific routes to require login

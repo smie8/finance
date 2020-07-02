@@ -3,9 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from functions import stockquery, login_required
 from passlib.hash import sha256_crypt
-# from config import getPostgresUri
 import datetime
 import os
+
+# get postgresql uri from env variables
+pg_uri = os.getenv("POSTGRES_URI")
 
 # initialize/configure the app
 app = Flask(__name__)
@@ -18,8 +20,6 @@ Session(app)
 # if ENV is other than 'dev' -> app is using heroku's database
 ENV = 'dev'
 # ENV = 'heroku'
-# heroku's env variables:
-#   heroku config:set POSTGRES_URI=insert-key-here
 
 # sqlalchemy config
 if ENV == 'dev':
@@ -28,7 +28,6 @@ if ENV == 'dev':
 else:
     app.debug = False
     app.config['SQLALCHEMY_DATABASE_URI'] = pg_uri
-    # TODO app.config['SQLALCHEMY_DATABASE_URI'] = pg_uri
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

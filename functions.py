@@ -1,8 +1,15 @@
-from config import getKey
+# from config import getKey
 from functools import wraps
 from flask import render_template, request, session
 import httplib2
 import json
+import os
+
+# env variables
+# heroku config:set API_KEY_TRADIER=insert-key-here
+#
+# TODO
+api_key = os.getenv("API_KEY")
 
 # decorate specific routes to require login
 # http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
@@ -18,8 +25,11 @@ def login_required(f):
 # query for stock with symbol
 def stockquery(symbol):
     connection = httplib2.HTTPSConnectionWithTimeout('sandbox.tradier.com', 443, timeout = 30)
+    # headers = {"Accept":"application/json",
+    #        "Authorization":"Bearer " + getKey()}
+    # TODO
     headers = {"Accept":"application/json",
-           "Authorization":"Bearer " + getKey()}
+        "Authorization":"Bearer " + api_key}
 
     connection.request('GET', '/v1/markets/quotes?symbols=' + symbol, None, headers)
     try:

@@ -15,6 +15,7 @@ flask-session = "*"
 httplib2 = "*"
 passlib = "*"
 requests = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.8"

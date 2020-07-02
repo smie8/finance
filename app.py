@@ -22,7 +22,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # if ENV is other than 'dev' -> app is using heroku's database
-ENV = 'dev'
+ENV = 'prod'
 # ENV = 'heroku'
 
 # env variables
@@ -137,6 +137,7 @@ def login():
                 flash('Incorrect password.')
                 return redirect('/login')
         except:
+            # TODO bug
             flash('User "' + username + '" does not exist.')
             return redirect('/login')
 

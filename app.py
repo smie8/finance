@@ -166,7 +166,7 @@ def signup():
                     session['userID'] = user[0].id
                 except:
                     return render_template('login.html', message='Something went wrong.')
-                flash('User ' + username + ' created. You have logged in successfully.')
+                flash('Created and logged in user "' + username + '". You have been given $10,000 in cash.')
                 return redirect('/dashboard')
             
             return render_template('signup.html', message='This username is taken.')
@@ -236,8 +236,8 @@ def buy():
                 db.session.commit()
             print('stocks updated')
 
+            total = round(price * count, 2)
             price = round(price, 2)
-            total = price * count
             # commit to history database
             data = History(userid, symbol, count, price, timestamp, total, name)
             db.session.add(data)
@@ -306,7 +306,7 @@ def sell():
                 flash('You do not own that many shares.')
                 return redirect('/sell')
 
-            total = price * count
+            total = round(price * count, 2)
             count *= -1 # because user is selling
             price = round(price, 2)
             # commit to history database
@@ -338,9 +338,13 @@ def history():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    # fetch user's stocks
     userid = session['userID']
     try:
+        # fetch user's money
+        user = db.session.query(Users).filter(Users.id == userid).first()
+        money = user.money
+
+        # fetch stock owned by user
         stocks = db.session.query(Stocks).filter(Stocks.userid == userid)
         # stocks list
         stocksList = []
@@ -365,8 +369,9 @@ def dashboard():
             total += stock.total
 
         total = round(total, 2)
+        totalmoney = round(total + money, 2)
 
-        return render_template('dashboard.html', stocks=stocksList, total=total)
+        return render_template('dashboard.html', stocks=stocksList, total=total, money=money, totalmoney=totalmoney)
     except:
         print('Something went wrong')
         return render_template('dashboard.html')

@@ -5,10 +5,8 @@ import httplib2
 import json
 import os
 
-# env variables
-# heroku config:set API_KEY_TRADIER=insert-key-here
-#
-# TODO
+# heroku's env variables:
+#   heroku config:set API_KEY=insert-key-here
 api_key = os.getenv("API_KEY")
 
 # decorate specific routes to require login

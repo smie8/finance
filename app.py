@@ -7,12 +7,6 @@ from passlib.hash import sha256_crypt
 import datetime
 import os
 
-# TODO
-pg_uri = os.getenv("POSTGRES_URI")
-print(pg_uri)
-api_key = os.getenv("API_KEY")
-print(api_key)
-
 # initialize/configure the app
 app = Flask(__name__)
 
@@ -22,15 +16,10 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # if ENV is other than 'dev' -> app is using heroku's database
-ENV = 'prod'
+ENV = 'dev'
 # ENV = 'heroku'
-
-# env variables
-# heroku config:set POSTGRES_URI=insert-key-here
-#
-# TODO
-# import os
-# pg_uri = os.getenv('POSTGRES_URI', 'optional-default')
+# heroku's env variables:
+#   heroku config:set POSTGRES_URI=insert-key-here
 
 # sqlalchemy config
 if ENV == 'dev':

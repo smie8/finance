@@ -197,14 +197,14 @@ def buy():
         return render_template('buy.html')
 
     if request.method == 'POST':
-        symbol = request.form['symbol']
-        count = int(request.form['count'])
-        userid = session['userID']
-        timestamp = str(datetime.datetime.now())
-        timestamp = timestamp.split('.')
-        timestamp = timestamp[0]
-
         try:
+            symbol = request.form['symbol']
+            count = int(request.form['count'])
+            userid = session['userID']
+            timestamp = str(datetime.datetime.now())
+            timestamp = timestamp.split('.')
+            timestamp = timestamp[0]
+
             data = stockquery(symbol)
             price = data['price']
             name = str(data['company'])
@@ -262,13 +262,13 @@ def sell():
         return render_template('sell.html', symbols = symbols)
 
     if request.method == 'POST':
-        symbol = request.form['symbol']
-        count = int(request.form['count'])
-        timestamp = str(datetime.datetime.now())
-        timestamp = timestamp.split('.')
-        timestamp = timestamp[0]
-
         try:
+            symbol = request.form['symbol']
+            count = int(request.form['count'])
+            timestamp = str(datetime.datetime.now())
+            timestamp = timestamp.split('.')
+            timestamp = timestamp[0]
+
             data = stockquery(symbol)
             price = data['price']
             cost = price * count

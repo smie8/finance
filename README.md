@@ -11,6 +11,7 @@ Web application, where you can create an user, login to your account to buy and 
 - view history of buying and selling stocks
 
 ### FUTURE FEATURES
+- dashboard facelift
 - top list of wealthiest users
 
 ### TECH STACK

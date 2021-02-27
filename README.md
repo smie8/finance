@@ -10,10 +10,6 @@ Web application, where you can create an user, login to your account to buy and 
 - list your stocks and their total value
 - view history of buying and selling stocks
 
-### FUTURE FEATURES
-- dashboard facelift
-- top list of wealthiest users
-
 ### TECH STACK
 - Heroku
 - PostgreSQL
